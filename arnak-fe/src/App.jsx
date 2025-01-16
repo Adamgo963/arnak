@@ -4,7 +4,7 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 
-const socket = io.connect("http://localhost:5000");
+const socket = io.connect("https://arnak.onrender.com/");
 
 function App() {
   const [count, setCount] = useState(0);
