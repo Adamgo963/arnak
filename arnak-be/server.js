@@ -4,11 +4,14 @@ const { Server } = require("socket.io");
 const path = require("path");
 
 const app = express();
-const staticPath = path.resolve(__dirname, ".", "dist");
+const port = 5000;
+const staticPath = path.resolve(__dirname, "dist");
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: { origin: "http://localhost:3000", methods: ["GET", "POST"] },
 });
+
+app.use(express.static(staticPath));
 
 io.on("connection", (socket) => {
   console.log(socket.id);
@@ -24,12 +27,9 @@ io.on("connection", (socket) => {
   });
 });
 
-if (process.env.NODE_ENV === "production") {
-  app.get("*", (req, res) => {
-    app.use(express.static(staticPath));
-    const indexFile = path.join(__dirname, "dist", "index.html");
-    return res.sendFile(indexFile);
-  });
-}
+app.get("*", (req, res) => {
+  const indexFile = path.join(__dirname, "dist", "index.html");
+  return res.sendFile(indexFile);
+});
 
-server.listen(5000, () => console.log("Server listening on port 5000."));
+server.listen(port, () => console.log(`Server listening on port ${port}`));
